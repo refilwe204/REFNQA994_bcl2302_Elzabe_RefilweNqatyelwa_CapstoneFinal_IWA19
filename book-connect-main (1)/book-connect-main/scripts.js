@@ -34,6 +34,12 @@ dataListItems.appendChild(fragment);
 const moreBooks = document.querySelector("[data-list-button]");
 let showMore = page * BOOKS_PER_PAGE;
 
+moreBooks.innerHTML = /* html */ [
+    `<span>Show more</span>`,
+    `<span class="list__remaining">${
+      matches.length - showMore > 0 ? matches.length - showMore : 0}</span>`,
+    ]
+
 // show more books button
 moreBooks.addEventListener("click", () => {
   const dataListItems = document.querySelector("[data-list-items]");
@@ -130,28 +136,75 @@ function createDropdownOptions(parentElement, options, defaultOption) {
   }
 }
 
+  
 // Drop down for genres
 const dataSearchGenres = document.querySelector("[data-search-genres]");
-createDropdownOptions(dataSearchGenres, genres, "All Genres");
+const allGenresOption = document.createElement("option"); 
+allGenresOption.value = "any"; 
+allGenresOption.innerText = "All Genres"; 
+dataSearchGenres.appendChild(allGenresOption); 
+for (const [id, names] of Object.entries(genres)) {
+    const element = document.createElement("option"); 
+    element.value = id; 
+    element.innerText = names; 
+    dataSearchGenres.appendChild(element); 
+}
+
+for (const [id, names] of Object.entries(genres)) {
+    const element = document.createElement("option"); 
+    element.value = id; 
+    element.innerText = names; 
+    dataSearchGenres.appendChild(element); 
+}
 
 // Drop down for authors
-const dataSearchAuthors = document.querySelector("[data-search-authors]");
-createDropdownOptions(dataSearchAuthors, authors, "All Authors");
 
+const dataSearchAuthors = document.querySelector("[data-search-authors]"); 
+const allAuthorsOption = document.createElement("option");
+allAuthorsOption.value = "any";
+allAuthorsOption.innerText = "All Authors";
+dataSearchAuthors.appendChild(allAuthorsOption);
+for (const [id, names] of Object.entries(authors)) {
+    const element = document.createElement("option");
+    element.value = id;
+    element.innerText = names;
+    dataSearchAuthors.appendChild(element);
+}
+
+// settings button for day and night
 const settingsBtn = document.querySelector('[data-header-settings]');
 settingsBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    const themeOverlay = document.querySelector('[data-settings-overlay]');
-    themeOverlay.showModal();
+  event.preventDefault();
+  
+  const themeOverlay = document.querySelector('[data-settings-overlay]');
+  themeOverlay.showModal();
 
-    const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
-    settingsCancelBtn.addEventListener('click', () => {
-      const themeOverlay = document.querySelector('[data-settings-overlay]');
-      themeOverlay.open = false;
-    });
-    
+  const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
+  settingsCancelBtn.addEventListener('click', () => {
+    const themeOverlay = document.querySelector('[data-settings-overlay]');
+    themeOverlay.close();
+  });
+  
+//--------------------Changing themes-----------------------------
+const dataSettingsTheme = document.querySelector('[data-settings-theme]')
+const saveButton = document.querySelector("body > dialog:nth-child(5) > div > div > button.overlay__button.overlay__button_primary")
+saveButton.addEventListener('click', (event) =>{
+    event.preventDefault()
+  if (dataSettingsTheme.value === 'day') {
+    document.querySelector('body').style.setProperty('--color-dark', day.dark)
+    document.querySelector('body').style.setProperty('--color-light', day.light)
+  }
+  document.querySelector("[data-settings-overlay]").style.display = "none";
+  if (dataSettingsTheme.value === 'night') {
+    document.querySelector('body').style.setProperty('--color-dark', night.dark)
+    document.querySelector('body').style.setProperty('--color-light', night.light)
+     }
+     document.querySelector("[data-settings-overlay]").style.display = "none";
+} )
+document.addEventListener(saveButtonToggle)
 
 })
+
 
 
 
