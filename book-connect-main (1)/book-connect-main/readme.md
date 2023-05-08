@@ -2,9 +2,9 @@
 
 # REFNQA994_bcl2302_Elzabe_RefilweNqatyelwa_IWA19
 
-#Authors name: Refilwe Nqatyelwa
+# Authors name: Refilwe Nqatyelwa
 
-#Skills: JavaScript
+# Skills: JavaScript
 
 fixed the code so that As a user, I want to view a list of book previews, by title and author, so that I can discover new books to read.
 As a user, I want an image associated with all book previews so that I can recognize a book by the cover even if I forgot the name.
