@@ -1,6 +1,7 @@
 import { books, authors, BOOKS_PER_PAGE, genres } from "./data.js";
 let page = 1;
 const matches = books;
+
 // Show more books on the list
 function createPreview({ author, id, image, title }) {
   let element = document.createElement('button');
@@ -18,6 +19,7 @@ function createPreview({ author, id, image, title }) {
   `;
   return element;
 }
+
 // Responsible for list of books
 let fragment = document.createDocumentFragment();
 const extracted = books.slice(0, 36);
@@ -29,6 +31,7 @@ const dataListItems = document.querySelector("[data-list-items]");
 dataListItems.appendChild(fragment);
 const moreBooks = document.querySelector("[data-list-button]");
 let showMore = page * BOOKS_PER_PAGE;
+
 // show more books button
 moreBooks.addEventListener("click", () => {
   const dataListItems = document.querySelector("[data-list-items]");
@@ -42,6 +45,7 @@ moreBooks.addEventListener("click", () => {
   showMore += remaining.length;
   moreBooks.disabled = !(matches.length - showMore > 0);
 });
+
 // Responsible for show more title
 moreBooks.innerHTML = /* html */ `
   <span>Show more</span> (
@@ -49,6 +53,7 @@ moreBooks.innerHTML = /* html */ `
     matches.length - showMore > 0 ? matches.length - showMore : 0
   }</span> )
 `;
+
 // Handle preview click
 document.querySelector("[data-list-items]").addEventListener("click", (event) => {
   const pathArray = Array.from(event.path || event.composedPath());
@@ -70,34 +75,42 @@ document.querySelector("[data-list-items]").addEventListener("click", (event) =>
   document.querySelector("[data-list-title]").textContent = active.title;
   document.querySelector( "[data-list-subtitle]").textContent = `${authors[active.author]} (${new Date(  active.published ).getFullYear()})`;
   document.querySelector("[data-list-description]").textContent = active.description;
+  
   //CLOSE BUTTON
     const closeButton = document.querySelector('[data-list-close]');
     closeButton.addEventListener('click', () => {
       document.querySelector('[data-list-active]').open = false;
     });
 });
+
 //Search modal show
 document.querySelector('[data-header-search]').addEventListener('click', () => {
   document.querySelector('[data-search-overlay]').open = true ;
   data-search-title.focus();
 })
+
 // SEARCH BUTTON
 // Search specific books
 const searchFilter = document.querySelector('[data-search-form]')
 // add event listener to search form
 searchFilter.addEventListener('submit', (event)=>{
     event.preventDefault();
+
 // hide book list
    document.querySelector('[data-list-items]').style.display = 'none'
+
 // clear message area
    document.querySelector('[data-list-message]').innerHTML = ''
-// get form data
+
+   // get form data
    const formData = new FormData(event.target)
     const title1 = formData.get('title');
     const genre1 = formData.get('genre');
     const author1 = formData.get('author');
+
 // array to store filtered books
 const filteredBooks = [];
+
 // loop through all books
 for (let i = 0; i < books.length; i++) {
   const book = books[i];
@@ -135,8 +148,10 @@ for (let i = 0; i < books.length; i++) {
     document.querySelector('[data-list-button]').disabled = true
    }
 };
+
 // display filtered books
 document.querySelector('[class="list__message"]').style.display = 'block'
+
 // create fragment to hold filtered books
 const fragment2 = document.createDocumentFragment()
     for (const {author ,image, title, id , description, published} of filteredBooks) {
@@ -157,7 +172,8 @@ const fragment2 = document.createDocumentFragment()
         <dt class='preview__title'>${title}<dt>
         <dt class='preview__author'> By ${authors[author]}</dt>
         </div>`
-// append preview button to fragment
+
+      // append preview button to fragment
         fragment2.appendChild(preview)
       }
       // add filtered books to message area
@@ -166,6 +182,7 @@ const fragment2 = document.createDocumentFragment()
               document.querySelector('[data-search-form]').reset()
               document.querySelector("[data-search-overlay]").close()
           })
+
 // Drop down for genres
 const dataSearchGenres = document.querySelector("[data-search-genres]");
 const allGenresOption = document.createElement("option");
@@ -200,11 +217,13 @@ document.querySelector('[data-settings-form]').addEventListener('submit', (event
   event.preventDefault();
   actions.settings.submit();
   });
+  
   // Closes the preview overlay
 document.querySelector('[data-list-close]').addEventListener('click', () => {
   document.querySelector('[data-list-active]').open = false;
 });
 ;
+
 //Theme mode
 // Get the settings button and add a click event listener
 const settingsBtn = document.querySelector('[data-header-settings]');
@@ -219,6 +238,7 @@ settingsBtn.addEventListener('click', (event) => {
       themeOverlay.close();
     });
 });
+
 // Get the theme select element and the root element
 const themeSelect = document.querySelector('[data-settings-theme]');
 //const root = document.documentElement;
@@ -234,6 +254,7 @@ const css = {
   }
 }
  const form = document.getElementById('settings');
+ 
  //const themeSelect = document.querySelector('[data-settings-theme]');
  form.addEventListener('submit', (event) => {
    event.preventDefault();
@@ -241,6 +262,7 @@ const css = {
    document.documentElement.style.setProperty('--color-dark', css[theme].dark);
    document.documentElement.style.setProperty('--color-light', css[theme].light);
  });
+ 
  // Initialize theme based on user's OS theme preference
  const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
  const initialTheme = prefersDarkMode ? 'night' : 'day';
